@@ -7,7 +7,7 @@ import sys
 this_dir = osp.dirname(osp.realpath(__file__))
 sys.path.insert(0, osp.join(this_dir, '..'))
 
-from _lib import cached_download
+from _lib import cached_download  # NOQA
 
 
 data_dir = osp.join(osp.dirname(osp.realpath(__file__)), 'data')
