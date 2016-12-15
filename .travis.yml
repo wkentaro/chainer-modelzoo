@@ -1,0 +1,15 @@
+sudo: false
+
+language: python
+
+python:
+  - '2.7'
+  - '3.3'
+  - pypy
+
+cache:
+  - pip
+
+script:
+  - pip install flake8 hacking
+  - flake8 .
