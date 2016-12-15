@@ -13,7 +13,7 @@ from _lib import cached_download
 data_dir = osp.join(osp.dirname(osp.realpath(__file__)), 'data')
 
 MODEL_PATH = osp.join(data_dir, 'pascal2012_fcn8s.chainermodel')
-IMAGE_PATH = osp.join(data_dir, '2008_002123.jpg')
+IMAGE_PATH = osp.join(data_dir, 'flickr_sample.jpg')
 
 
 if __name__ == '__main__':
@@ -29,8 +29,8 @@ if __name__ == '__main__':
     )
 
     cached_download(
-        url='http://www.cs.stanford.edu/~roozbeh/pascal-context/2008_002123.jpg',  # NOQA
+        url='https://farm2.staticflickr.com/1522/26471792680_a485afb024_z_d.jpg',  # NOQA
         path=IMAGE_PATH,
-        md5='',
+        md5='896f7f1773cad1b7273e54d6ba43f625',
         quiet=args.quiet,
     )
