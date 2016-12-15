@@ -9,8 +9,8 @@ but it has only links to external GitHub projects and reusing pretrained model i
 This repository contains:
 
 - **Pretrained model** (downloaded by `download.py` to `data`): can be loaded by serializer.
-- **Model definition** (`model.py`): Contains Python class which defines the model used to load pretrained model.
-- **Example** (`infer.py`): inference example using the pretrained model.
+- **Model definition** (`model.py`): with Python class which defines the model for loading pretrained model.
+- **Inference example** (`infer.py`): using the pretrained model.
 
 
 ## Usage
