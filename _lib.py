@@ -1,6 +1,5 @@
 import hashlib
 import os.path as osp
-import re
 import shlex
 import subprocess
 
