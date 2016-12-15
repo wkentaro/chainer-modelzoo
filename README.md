@@ -8,6 +8,6 @@ but it has only links to external GitHub projects and reusing pretrained model i
 
 This repository contains:
 
-- **Pretrained model**: can be loaded by `npz` or `hdf5` serializer. It should be downloaded by `download.py`.
-- **Model definition** (`model.py`): `Chain` Python class which defines the model used to load `chainermodel`.
+- **Pretrained model** (downloaded by `download.py`): can be loaded by serializer.
+- **Model definition** (`model.py`): Contains Python class which defines the model used to load pretrained model.
 - **Example** (`infer.py`): inference example using the pretrained model.
