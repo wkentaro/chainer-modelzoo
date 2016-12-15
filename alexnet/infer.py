@@ -14,10 +14,12 @@ from model import AlexNet
 def main():
     # load model
     model = AlexNet()
+    print('Loading pretrained model from {0}'.format(MODEL_PATH))
     chainer.serializers.load_hdf5(MODEL_PATH, model)
 
     # prepare net input
 
+    print('Loading image from {0}'.format(IMAGE_PATH))
     img = scipy.misc.imread(IMAGE_PATH, mode='RGB')
     img = scipy.misc.imresize(img, (227, 227))
     img_in = img.copy()
@@ -40,6 +42,7 @@ def main():
     argsort = np.argsort(score)
     label_id = argsort[-1]
 
+    print('Loading label_names from {0}'.format(SYNSET_PATH))
     with open(SYNSET_PATH, 'r') as f:
         label_names = [line.strip() for line in f.readlines()]
 
