@@ -19,11 +19,8 @@ You need to install requirements with following commands.
 
 ```bash
 pip install -r requirements.txt
-
 cd <model>  # ex) cd alexnet
-
 ./download.py
-
 ./infer.py
 ```
 
