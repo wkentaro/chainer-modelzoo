@@ -1,5 +1,7 @@
 # chainer-modelzoo
 
+[![Build Status](https://travis-ci.org/wkentaro/chainer-modelzoo.svg?branch=master)](https://travis-ci.org/wkentaro/chainer-modelzoo)
+
 This repository is to list reusable models for [Chainer](https://github.com/pfnet/chainer)
 as [Model-Zoo](https://github.com/BVLC/caffe/wiki/Model-Zoo) does for [Caffe](https://github.com/BVLC/caffe).
 
