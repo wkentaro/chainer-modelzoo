@@ -34,7 +34,7 @@ def main():
 
     # infer
     model(x)
-    score = model.h_fc8.data[0]
+    score = model.score.data[0]
 
     # visualize result
 

@@ -31,14 +31,14 @@ class AlexNet(chainer.Chain):
         h = F.dropout(F.relu(self.fc6(h)), train=self.train)
         h = F.dropout(F.relu(self.fc7(h)), train=self.train)
         h = self.fc8(h)
-        self.h_fc8 = h
+        self.score = h
 
         if t is None:
             assert not self.train
             return
 
-        self.loss = F.softmax_cross_entropy(h, t)
-        self.accuracy = F.accuracy(h, t)
+        self.loss = F.softmax_cross_entropy(self.score, t)
+        self.accuracy = F.accuracy(self.score, t)
         chainer.report({'loss': self.loss, 'accuracy': self.accuracy})
 
         return self.loss
