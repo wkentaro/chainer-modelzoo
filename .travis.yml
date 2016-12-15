@@ -9,6 +9,9 @@ python:
 cache:
   - pip
 
+before_install:
+  - sudo apt-get install -qq cython liblapack-dev libhdf5-dev
+
 script:
   - pip install flake8 hacking
   - flake8 .
