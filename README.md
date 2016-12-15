@@ -30,3 +30,4 @@ cd <model>  # ex) cd alexnet
 name | paper
 --- | ---
 [alexnet](alexnet) | https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
+[fcn](fcn) | https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf
