@@ -6,16 +6,7 @@ import subprocess
 
 
 def download(url, path, quiet=False):
-
-    def is_google_drive_url(url):
-        m = re.match('^https?://drive.google.com/uc\?id=.*$', url)
-        return m is not None
-
-    if is_google_drive_url(url):
-        client = 'gdown'
-    else:
-        client = 'wget'
-
+    client = 'gdown'  # to support GDrive public links
     cmd = '{client} {url} -O {path}'.format(client=client, url=url, path=path)
     if quiet:
         cmd += ' --quiet'
