@@ -1,4 +1,6 @@
-sudo: false
+sudo: required
+
+dist: trusty
 
 language: python
 
@@ -6,15 +8,11 @@ python:
   - '2.7'
   - '3.3'
 
-addons:
-  apt:
-    packages:
-      - cython
-      - liblapack-dev
-      - libhdf5-dev
-
 cache:
   - pip
+
+before_install:
+  - sudo apt-get install -qq -y cython liblapack-dev libhdf5-dev
 
 script:
   - pip install flake8 hacking
