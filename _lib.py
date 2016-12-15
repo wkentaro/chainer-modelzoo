@@ -26,7 +26,8 @@ def cached_download(url, path, md5=None, quiet=False):
         return is_same
 
     if osp.exists(path) and not md5:
-        print('{} already exists'.format(path))
+        if not quiet:
+            print('{} already exists'.format(path))
         return path
     elif osp.exists(path) and md5 and check_md5(path, md5):
         return path
