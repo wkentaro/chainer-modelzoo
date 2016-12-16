@@ -23,7 +23,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     cached_download(
-        url='https://drive.google.com/uc?id=0B9P1L--7Wd2vWmR5SkpTS3VoQmM',
+        url='https://drive.google.com/uc?id=0B5DV6gwLHtyJZkd1ZTRiNUdrUXM',
         path=MODEL_PATH,
         md5='2175620a2237bbd33e35bf38867d84b2',
         quiet=args.quiet,
