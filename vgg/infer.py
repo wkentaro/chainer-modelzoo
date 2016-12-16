@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import os.path as osp
+import sys
+
 import chainer
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,6 +12,11 @@ from download import IMAGE_PATH
 from download import MODEL_PATH
 from download import SYNSET_PATH
 from model import VGG16
+
+this_dir = osp.dirname(osp.realpath(__file__))
+sys.path.insert(0, osp.join(this_dir, '..'))
+
+from _lib import draw_image_classification_top5  # NOQA
 
 
 def main():
@@ -40,20 +48,20 @@ def main():
 
     likelihood = np.exp(score) / np.sum(np.exp(score))
     argsort = np.argsort(score)
-    label_id = argsort[-1]
 
     print('Loading label_names from {0}'.format(SYNSET_PATH))
     with open(SYNSET_PATH, 'r') as f:
-        label_names = [line.strip() for line in f.readlines()]
+        label_names = np.array([line.strip() for line in f.readlines()])
 
     print('Likelihood of top5:')
-    for index in argsort[::-1][:5]:
+    top5 = argsort[::-1][:5]
+    for index in top5:
         print('  {0:5.1f}%: {1}'
               .format(likelihood[index]*100, label_names[index]))
 
-    plt.title('{0:5.1f}%: {1}'
-              .format(likelihood[label_id]*100, label_names[label_id]))
-    plt.imshow(img_in)
+    img_viz = draw_image_classification_top5(
+        img_in, label_names[top5], likelihood[top5])
+    plt.imshow(img_viz)
     plt.axis('off')
     plt.tight_layout()
     plt.show()
