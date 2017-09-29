@@ -25,6 +25,9 @@ def main():
     print('Loading pretrained model from {0}'.format(MODEL_PATH))
     chainer.serializers.load_hdf5(MODEL_PATH, model)
 
+    chainer.config.train = False
+    chainer.config.enable_backprop = False
+
     # prepare net input
 
     print('Loading image from {0}'.format(IMAGE_PATH))
@@ -38,7 +41,7 @@ def main():
     img -= mean_bgr
 
     x_data = np.array([img.transpose(2, 0, 1)])
-    x = chainer.Variable(x_data, volatile='ON')
+    x = chainer.Variable(x_data)
 
     # infer
     model(x)
