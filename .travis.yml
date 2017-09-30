@@ -15,3 +15,7 @@ before_install:
 script:
   - pip install flake8 hacking
   - flake8 .
+
+branches:
+  only:
+    - master
