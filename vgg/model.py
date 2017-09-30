@@ -29,7 +29,6 @@ class VGG16(chainer.Chain):
             fc7=L.Linear(4096, 4096),
             fc8=L.Linear(4096, n_class)
         )
-        self.train = False
 
     def __call__(self, x, t=None):
         h = F.relu(self.conv1_1(x))
@@ -61,7 +60,7 @@ class VGG16(chainer.Chain):
         self.score = h
 
         if t is None:
-            assert not self.train
+            assert not chainer.config.train
             return
 
         self.loss = F.softmax_cross_entropy(self.score, t)
