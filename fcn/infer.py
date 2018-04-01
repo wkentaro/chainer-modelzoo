@@ -71,7 +71,6 @@ def main():
     x_data = np.array([img.transpose(2, 0, 1)])
     if args.gpu >= 0:
         x_data = chainer.cuda.to_gpu(x_data)
-
     x = chainer.Variable(x_data)
 
     # infer
