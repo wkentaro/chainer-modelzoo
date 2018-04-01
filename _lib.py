@@ -84,7 +84,7 @@ def draw_image_classification_top5(img, label_names, proba):
     bars = np.zeros((square_size // 2, square_size, 3), dtype=np.uint8)
     bars.fill(255)
     step = square_size // (2 * 5)
-    for i in xrange(5):
+    for i in range(5):
         y1 = step * i
         y2 = y1 + step
         x1 = 0
