@@ -34,16 +34,15 @@ class FCN8s(chainer.Chain):
             score_fr=L.Convolution2D(4096, self.n_class, 1, stride=1, pad=0),
 
             upscore2=L.Deconvolution2D(self.n_class, self.n_class, 4,
-                                       stride=2, pad=0, use_cudnn=False),
+                                       stride=2, pad=0),
             upscore8=L.Deconvolution2D(self.n_class, self.n_class, 16,
-                                       stride=8, pad=0, use_cudnn=False),
+                                       stride=8, pad=0),
 
             score_pool3=L.Convolution2D(256, self.n_class, 1, stride=1, pad=0),
             score_pool4=L.Convolution2D(512, self.n_class, 1, stride=1, pad=0),
             upscore_pool4=L.Deconvolution2D(self.n_class, self.n_class, 4,
-                                            stride=2, pad=0, use_cudnn=False),
+                                            stride=2, pad=0),
         )
-        self.train = False
 
     def __call__(self, x, t=None):
         self.x = x
@@ -91,12 +90,12 @@ class FCN8s(chainer.Chain):
 
         # fc6
         h = F.relu(self.fc6(pool5))
-        h = F.dropout(h, ratio=.5, train=self.train)
+        h = F.dropout(h, ratio=.5)
         fc6 = h  # 1/32
 
         # fc7
         h = F.relu(self.fc7(fc6))
-        h = F.dropout(h, ratio=.5, train=self.train)
+        h = F.dropout(h, ratio=.5)
         fc7 = h  # 1/32
 
         # score_fr
@@ -117,7 +116,8 @@ class FCN8s(chainer.Chain):
 
         # score_pool4c
         h = score_pool4[:, :,
-                        5:5+upscore2.data.shape[2], 5:5+upscore2.data.shape[3]]
+                        5:5 + upscore2.data.shape[2],
+                        5:5 + upscore2.data.shape[3]]
         score_pool4c = h  # 1/16
 
         # fuse_pool4
@@ -130,8 +130,8 @@ class FCN8s(chainer.Chain):
 
         # score_pool4c
         h = score_pool3[:, :,
-                        9:9+upscore_pool4.data.shape[2],
-                        9:9+upscore_pool4.data.shape[3]]
+                        9:9 + upscore_pool4.data.shape[2],
+                        9:9 + upscore_pool4.data.shape[3]]
         score_pool3c = h  # 1/8
 
         # fuse_pool3
@@ -143,11 +143,11 @@ class FCN8s(chainer.Chain):
         upscore8 = h  # 1/1
 
         # score
-        h = upscore8[:, :, 31:31+x.data.shape[2], 31:31+x.data.shape[3]]
+        h = upscore8[:, :, 31:31 + x.data.shape[2], 31:31 + x.data.shape[3]]
         self.score = h  # 1/1
 
         if t is None:
-            assert not self.train
+            assert not chainer.config.train
             return
 
         # testing with t or training

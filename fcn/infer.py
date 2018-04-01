@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
+import os.path as osp
+
 import chainer
 import matplotlib.cm
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.misc
-import skimage.color
 
 from download import IMAGE_PATH
 from download import MODEL_PATH
@@ -40,12 +41,15 @@ LABEL_NAMES = [
 def main():
     # load model
     model = FCN8s()
-    print('Loading pretrained model from {0}'.format(MODEL_PATH))
+    print('Loading pretrained model from: {0}'.format(MODEL_PATH))
     chainer.serializers.load_hdf5(MODEL_PATH, model)
+
+    chainer.config.train = False
+    chainer.config.enable_backprop = False
 
     # prepare net input
 
-    print('Loading image from {0}'.format(IMAGE_PATH))
+    print('Loading image from: {0}'.format(IMAGE_PATH))
     img = scipy.misc.imread(IMAGE_PATH, mode='RGB')
     img_in = img.copy()
 
@@ -55,7 +59,7 @@ def main():
     img -= mean_bgr
 
     x_data = np.array([img.transpose(2, 0, 1)])
-    x = chainer.Variable(x_data, volatile='ON')
+    x = chainer.Variable(x_data)
 
     # infer
     model(x)
@@ -65,17 +69,17 @@ def main():
 
     label = np.argmax(score, axis=0)
     n_labels = score.shape[0]
-    colormap = matplotlib.cm.Set1(np.linspace(0, 1, n_labels-1))[:, :3]
+    colormap = matplotlib.cm.prism(np.arange(n_labels))[:, :3]
     colormap = np.vstack(([0, 0, 0], colormap))  # bg color
-    label_viz = skimage.color.label2rgb(label, colors=colormap[1:], bg_label=0)
+    label_viz = colormap[label]
 
     # network input
-    plt.subplot(211)
+    plt.subplot(121)
     plt.imshow(img_in)
     plt.axis('off')
 
     # network output
-    plt.subplot(212)
+    plt.subplot(122)
     plt.imshow(label_viz)
     plt.axis('off')
     plt_handlers = []
@@ -86,12 +90,13 @@ def main():
         fc = colormap[label_value]
         p = plt.Rectangle((0, 0), 1, 1, fc=fc)
         plt_handlers.append(p)
-        plt_titles.append(LABEL_NAMES[label_value])
+        plt_titles.append('%d: %s' % (label_value, LABEL_NAMES[label_value]))
     plt.legend(plt_handlers, plt_titles, loc='upper right',
                framealpha=0.5)
 
-    plt.tight_layout()
-    plt.show()
+    out_file = osp.join(osp.dirname(IMAGE_PATH), 'result.jpg')
+    plt.savefig(out_file)
+    print('Saved as: {0}'.format(out_file))
 
 
 if __name__ == '__main__':
