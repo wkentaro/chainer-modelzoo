@@ -77,10 +77,9 @@ def main():
 
     img_viz = draw_image_classification_top5(
         img_in, label_names[top5], likelihood[top5])
-    plt.imshow(img_viz)
-    plt.axis('off')
-    plt.tight_layout()
-    plt.show()
+    out_file = osp.join(osp.dirname(IMAGE_PATH), 'result.jpg')
+    plt.imsave(out_file, img_viz)
+    print('Saved as: {0}'.format(out_file))
 
 
 if __name__ == '__main__':
