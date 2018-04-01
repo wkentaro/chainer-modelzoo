@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import argparse
 import os.path as osp
 import sys
 
@@ -20,10 +21,19 @@ from _lib import draw_image_classification_top5  # NOQA
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--gpu', '-g', type=int, default=-1, help='gpu id')
+    args = parser.parse_args()
+
     # load model
     model = AlexNet()
     print('Loading pretrained model from {0}'.format(MODEL_PATH))
     chainer.serializers.load_hdf5(MODEL_PATH, model)
+
+    if args.gpu >= 0:
+        chainer.cuda.get_device_from_id(args.gpu).use()
+        model.to_gpu()
 
     chainer.config.train = False
     chainer.config.enable_backprop = False
@@ -41,11 +51,14 @@ def main():
     img -= mean_bgr
 
     x_data = np.array([img.transpose(2, 0, 1)])
+    if args.gpu >= 0:
+        x_data = chainer.cuda.to_gpu(x_data)
     x = chainer.Variable(x_data)
 
     # infer
     model(x)
     score = model.score.data[0]
+    score = chainer.cuda.to_cpu(score)
 
     # visualize result
 
@@ -64,10 +77,10 @@ def main():
 
     img_viz = draw_image_classification_top5(
         img_in, label_names[top5], likelihood[top5])
-    plt.imshow(img_viz)
-    plt.axis('off')
-    plt.tight_layout()
-    plt.show()
+
+    out_file = osp.join(osp.dirname(IMAGE_PATH), 'result.jpg')
+    plt.imsave(out_file, img_viz)
+    print('Saved as: {0}'.format(out_file))
 
 
 if __name__ == '__main__':
