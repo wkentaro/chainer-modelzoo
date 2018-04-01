@@ -60,7 +60,7 @@ def main():
     top5 = argsort[::-1][:5]
     for index in top5:
         print('  {0:5.1f}%: {1}'
-              .format(likelihood[index]*100, label_names[index]))
+              .format(likelihood[index] * 100, label_names[index]))
 
     img_viz = draw_image_classification_top5(
         img_in, label_names[top5], likelihood[top5])
